@@ -1,0 +1,102 @@
+create table CLIENTE (
+rut varchar2 (30) primary key ,
+nombre varchar2 (40),
+direccion varchar2 (100),
+ciudad varchar2 (40)
+);
+
+create table TARJETA (
+codigo integer primary key,
+fecha_caducidad date,
+cupo_maximo integer,
+cupo_disponible integer,
+cupo_utilizado integer,
+rut_cliente varchar2(30),
+foreign key (rut_cliente)references cliente
+);
+
+create table TIPO_MOVIMIENTO(
+codigo integer primary key,
+nombre varchar2(30)
+);
+
+create table MOVIMIENTO(
+codigo_operacion integer primary key,
+valor integer,
+fecha date,
+codigo_movimiento integer,
+codigo_tarjeta integer,
+foreign key(codigo_movimiento)references tipo_movimiento(codigo),
+foreign key(codigo_tarjeta)references tarjeta(codigo)
+);
+
+--------------------------------------------------------------------------------------------------]
+---tuplas-----------------------------------------------------------------------------------------]
+
+---CLIENTE---
+insert into cliente values('11111111-1','benjamin martinez','las lomas 111','concepcion');
+insert into cliente values('11111111-2','cristobal jeldres','las palomas 222','talca');
+insert into cliente values('11111111-3','lucho jara','las gaviotas 333','santiago');
+
+---TARJETA---
+insert into tarjeta values(1,'01-nov-2022',100000,50000,0,'11111111-1');
+insert into tarjeta values(2,'02-nov-2022',100000,60000,0,'11111111-2');
+insert into tarjeta values(3,'03-nov-2022',100000,70000,0,'11111111-3');
+
+---TIPO_MOVIMIENTO---
+insert into tipo_movimiento values(10,'compras');
+insert into tipo_movimiento values(11,'pagos deuda');
+
+
+---MOVIMIENTO---
+insert into movimiento values(100,5000,' 01-nov-2021',10,1);
+insert into movimiento values(101,2000,' 02-nov-2021',10,2);
+insert into movimiento values(102,1000,' 03-nov-2021',10,3);
+
+
+
+--------------------------------------------------------------------------------------------------]
+---Consultas--------------------------------------------------------------------------------------]
+
+
+--CLASIFICACION DE CLIENTES-----------------------
+
+---CLIENTES FRECUENTES >10 ---
+---CLIENTES REGULARES <10 Y >5 ---
+---CLIENTES CRITICOS <5 ---
+
+
+
+declare
+	cli integer;
+	cant integer;
+begin
+	cli:= &ingresa_cliente;
+	select count(1) into cant from movimiento where codigo_operacion= cli;
+
+	if cant>10 then
+		dbms_output.put_line ('el cliente es frecuente');
+	elsif cant<10 and cant>=5 then
+		dbms_output.put_line ('el cliente es regular');
+
+	elsif cant<5 then
+		dbms_output.put_line ('el cliente es critico');
+	end if;
+
+end;
+
+---Estado de cuenta---------------------------------------------------------------------------------]
+
+select 
+from 
+while
+
+
+
+
+
+
+
+
+
+

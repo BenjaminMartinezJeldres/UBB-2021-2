@@ -1,0 +1,101 @@
+---Tablas
+create table Factura ( 
+fac_cod integer primary key,
+fac_fecha varchar2(20)
+);
+
+-----------------------------------------------
+create table Proveedor (
+pro_rut varchar2(20) primary key,
+pro_nombre varchar2(20),
+pro_representante varchar2(20)
+);
+
+-----------------------------------------------
+
+create table Cliente (
+cli_rut varchar2(20) primary key,
+cli_nombre varchar2(20)
+);
+
+----------------------------------------------
+
+create table Producto (
+prd_cod integer primary key,
+prd_nombre varchar2(20),
+prd_precio integer,
+pro_rut varchar2(20)
+);
+
+-----------------------------------------------
+
+create table Compra (
+fac_cod integer,
+cli_rut varchar2(20),
+prd_cod integer,
+com_cantidad integer,
+primary key(fac_cod,cli_rut,prd_cod),
+foreign key(fac_cod)references Factura,
+foreign key(cli_rut)references Cliente,
+foreign key(prd_cod)references Producto
+);
+
+
+ ----Tuplas------------------------------------
+ ---factura---------------------------------------------
+insert into Factura values(90,'2021-10-02');
+insert into Factura values(80,'2021-09-07');
+---proveedor--------------------------------------------
+
+insert into Proveedor values('11111111-1','elias quinteros','bike');
+insert into Proveedor values('22222222-2','martin lagos','drink');
+
+---cliente--------------------------------------------
+insert into Cliente values('12345678-9','matias fuentes');
+insert into Cliente values('19993338-1','benjamin martinez');
+---producto--------------------------------------------
+insert into Producto values(1,'bicicleta',50000,'11111111-1');
+insert into Producto values(2,'tequila',10000,'22222222-2');
+---compra--------------------------------------------
+insert into Compra values(90,'12345678-9',1,1);
+insert into Compra values(80,'12345678-9',2,1);
+
+
+-----------------------------------------------
+---consultas-----------------------------------
+---3 Muestre el nombre de los clientes que han comprado al menos dos productos cuyo precio sea mayor a $3.000.
+select distinct c.cli_nombre 
+from (Cliente c inner join Compra co on c.cli_rut=co.cli_rut)inner join Producto p 
+on co.prd_cod=p.prd_cod and p.prd_precio >3000
+
+
+
+---4 Seleccione el nombre de los clientes que no han comprado productos.
+select distinct c.cli_nombre
+from Cliente c,Compra co
+where c.cli_rut not in(select co.cli_rut from Compra)
+
+
+---5 Seleccione el nombre de los clientes que han adquirido bicicletas. 
+
+select distinct c.cli_nombre,p.prd_nombre
+from (Cliente c inner join Compra co on c.cli_rut=co.cli_rut)inner join Producto p 
+on prd_nombre='bicicleta'
+
+---6 Muestre el nombre del proveedor que haya emitido la menor cantidad de facturas durante el mes de octubre.
+
+create view menor_fac as (select p.pro_nombre,f.fac_fecha
+from Proveedor p ,Factura f, Compra c
+where f.fac_cod=c.fac_cod and f.fac_fecha>= (date '2021-10-01')and f.fac_fecha <=(date <='2021-10-31')
+);
+
+---no puedo desarrollar este ejercicio ya que la fecha la tengo como Varchar,
+---por lo que no podre usar > o < , tambien mi conocimiento en vistas no es suficiente
+
+
+
+
+
+
+
+

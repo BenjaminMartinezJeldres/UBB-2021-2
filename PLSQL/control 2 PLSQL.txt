@@ -1,0 +1,169 @@
+create table bmjbeneficio (
+        cod integer primary key,	
+	nombre varchar2(20),
+	monto_carga integer,
+	monto_maximo integer
+
+);
+
+create table bmjfamilia(
+	rut_jh varchar2(20) primary key,
+	nombre_jh varchar2(30),
+	comuna varchar2(30),
+	num_cargas integer
+);
+
+create table bmjpostula(
+	cod integer,
+	rut_jh varchar2(20),
+	fecha_recep date,
+	situacion varchar2 (20),
+	monto_recibido integer,
+	primary key (cod,rut_jh, fecha_recep),
+	foreign key (cod)references bmjbeneficio,
+	foreign key (rut_jh) references bmjfamilia
+	
+);
+
+
+
+---TUPLAS --------------------------------------------------------------------------------------------------]
+
+insert into bmjbeneficio values ( 1,'IFE',60000,600000);
+insert into bmjbeneficio values ( 2,'IFE',60000,600000);
+insert into bmjbeneficio values ( 3,'IFE',60000,600000);
+insert into bmjbeneficio values ( 4,'IFE',60000,600000);
+insert into bmjbeneficio values ( 5,'IFE',60000,600000);
+insert into bmjbeneficio values ( 6,'IFE',60000,600000);
+insert into bmjbeneficio values ( 7,'IFE',60000,600000);
+insert into bmjbeneficio values ( 8,'IFE',60000,600000);
+insert into bmjbeneficio values ( 9,'IFE',60000,600000);
+insert into bmjbeneficio values ( 10,'IFE',60000,600000);
+
+
+insert into bmjfamilia values ('11111111-1','matias','concepcion',7);
+insert into bmjfamilia values ('11111112-1','benjamin','concepcion',9);
+insert into bmjfamilia values ('11111113-1','elias','san pedro',2);
+insert into bmjfamilia values ('11111114-1','marcelo','san pedro',8);
+insert into bmjfamilia values ('11111115-1','jesus','penco',5);
+insert into bmjfamilia values ('11111116-1','javier','concepcion',4);
+insert into bmjfamilia values ('11111117-1','juan','concepcion',3);
+insert into bmjfamilia values ('11111118-1','joaquin','concepcion',2);
+insert into bmjfamilia values ('11111119-1','francisca','san pedro',1);
+insert into bmjfamilia values ('11111120-1','andres','penco',3);
+
+
+insert into bmjpostula values (1,'11111111-1','01-jan-2021','aceptado',420000);
+insert into bmjpostula values (2,'11111112-1','01-feb-2021','aceptado',540000);
+insert into bmjpostula values (3,'11111113-1','01-mar-2021','aceptado',120000);
+insert into bmjpostula values (4,'11111114-1','01-apr-2021','aceptado',480000);
+insert into bmjpostula values (5,'11111115-1','01-may-2021','aceptado',300000);
+insert into bmjpostula values (6,'11111116-1','01-jun-2021','aceptado',240000);
+insert into bmjpostula values (7,'11111117-1','02-jan-2021','aceptado',180000);
+insert into bmjpostula values (8,'11111118-1','02-feb-2021','aceptado',120000);
+insert into bmjpostula values (9,'11111119-1','02-mar-2021','aceptado',60000);
+insert into bmjpostula values (10,'1111120-1','02-apr-2021','aceptado',180000);
+
+
+
+select * from bmjpostula
+
+
+
+
+---CONSULTAS-------------------------------------------------------------------------------------------------]
+
+
+--Cree un programa en PL/SQL que permita clasificar las comunas,
+ --de acuerdo a la cantidad de familias beneficiadas (una familia es un beneficiario).
+-- Las comunas tipo A son las que tienes 5 o más familias beneficiadas. 
+--Las comunas B son menos de 5 y hasta 3. Y las comunas de tipo C tienen menos 3 familias beneficiadas.
+ --Se debe mostrar por pantalla el nombre de la comuna y el tipo al que pertenece.
+
+
+DECLARE
+	A integer;
+	B integer;
+	C integer;
+	cant integer;
+
+BEGIN
+	A :=
+	select count(1) into cant from bmjpostula where p.rut_jh= f.rut_jh
+	A>=5
+	5>B>=3
+	C<3
+
+	DBMS_OUTPUT.PUT_LINE (NOMBRE COMUNA ES DE TIPO 'A, B ,C')
+
+END;
+
+
+
+
+
+
+
+
+--Cree un programa en PL/SQL que permita imprimir por pantalla el monto 
+--total recibido de beneficios de cada mes durante el primer semestre del año 2021 de una familia específica.
+ --El rut del jefa/jefa de hogar debe ingresarse por teclado 
+
+DECLARE
+    RUT VARCHAR2(20)= '11111111-1' ;
+    TOTAL_RECIBIDO INTEGER;
+	CURSOR SUMA_TOTAL_BENEFICIOS_MENSUALES IS
+	SELECT  P.FECHA_RECEP
+	FROM  BMJPOSTULA P 
+	where p.rut_jh='11111111-1' and sum(salario) as suma_total_beneficios_mensuales from bmjpostula
+
+
+
+BEGIN
+
+
+OPEN 
+
+LOOP
+	FETCH  fecha_recep
+
+END LOOP;
+
+EXIT WHEN 
+
+CLOSE
+
+END;
+/
+
+
+
+
+
+--Cree un trigger en PL/SQL que valide el monto recibido, 
+--el cual no debe ser superior al monto máximo del beneficio.
+-- En caso de que el monto sea menor al máximo del beneficio, 
+--debe ser de acuerdo a la cantidad de cargas que tiene registradas por el monto por carga del beneficio”.
+ --En caso de cumplirse debe arrojar un error
+
+
+
+
+
+--Cree un trigger en PL/SQL que valide que al ingresar o modificar un beneficio el monto máximo
+-- debe ser igual o superior a 5 veces el valor por carga. De lo contrario, 
+--debe corregir el valor máximo por 5 veces el valor por carga.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
